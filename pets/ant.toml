@@ -1,0 +1,21 @@
+name = "Ant"
+stats = {
+  health = 2,
+  damage = 2
+}
+effect = {
+  type = "onfaint",
+  actions = [
+    {
+      type = "var",
+      value = {
+        type = "fcall",
+        fn = "rand",
+        args = [
+          "0",
+          "$teamSize"
+        ]
+      }
+    }
+  ]
+}
