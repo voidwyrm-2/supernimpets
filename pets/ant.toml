@@ -1,21 +1,27 @@
+# `name` is just the display name of the pet, if this doesn't exist, then the ID is used instead
 name = "Ant"
-stats = {
-  health = 2,
-  damage = 2
-}
-effect = {
-  type = "onfaint",
-  actions = [
-    {
-      type = "var",
-      value = {
-        type = "fcall",
-        fn = "rand",
-        args = [
-          "0",
-          "$teamSize"
-        ]
-      }
-    }
-  ]
-}
+
+# the `stats` table contains the stats of the pet (duh)
+[stats]
+health = 2
+damage = 2
+
+# the `effect` table contains information on the pet's effect
+effect.kind = "onFaint" # `type` says when the effect happens, in this case, when the pet faints
+
+# `effect.actions` is a list of tables where each table is a action to take
+[[effect.actions]]
+kind = "setVar"                                                    # the `var` action creates a variable with the given value and name
+name = "effectedIndex"
+value = { type = "fcall", fn = "rand", args = ["0", "$teamSize"] }
+
+[[effect.actions]]
+kind = "condJump"
+index = 0
+cond = "@$effectedIndex != $selfIndex"
+
+[[effect.actions]]
+kind = "addTeamStat"
+teamIndex = "$effectedIndex"
+stat = "health"
+value = "@$"
